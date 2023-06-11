@@ -135,5 +135,5 @@
           - "{{ privsub3_out.subnet.id }}"
         routes:
           - dest: 0.0.0.0/0
-            gateway_id: "{{ nat_gateway_out.gateway_id }}"
+            gateway_id: "{{ nat_gateway_out.nat_gateway_id }}"
       register: privRT_out
