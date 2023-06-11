@@ -35,7 +35,7 @@
            cidr_ip: "{{MYIP}}"
       register: BastionSG_out
 
-    - Cretaing Bastion Host
+    - Creating Bastion Host
       ec2:
         key_name: vprofile-key
         region: "{{region}}"
@@ -47,11 +47,11 @@
           Name: "Bastion_host"
           Project: Vprofile
           Owner: Devops Team
-      exact_count: 1
-      count_tag:
+        exact_count: 1
+        count_tag:
           Name: "Bastion_host"
           Project: Vprofile
           Owner: Devops Team
-      group_id: "{{BastionSG_out.group_id}}"
-      vpc_subnet_id: "{{pubsub1id}}"
+        group_id: "{{BastionSG_out.group_id}}"
+        vpc_subnet_id: "{{pubsub1id}}"
       register: bastionHost_out
