@@ -3,6 +3,7 @@
   connection: local
   gather_facts: no
   tasks:
+
     - name: Import VPC setup Variable
       include_vars: vars/output_vars
 
@@ -14,7 +15,6 @@
         name: vprofile-key
         region: "{{region}}"
       register: vprokey_out
-
 
     - name: Save private key into file vpro-key.pem
       copy:
