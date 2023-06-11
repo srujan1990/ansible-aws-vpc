@@ -52,7 +52,6 @@
          Name: "Bastion_host"
          Project: Vprofile
          Owner: Devops Team
-       group: Bastion-host-sg
        group_id: "{{BastionSG_out.group.id}}"
        vpc_subnet_id: "{{ pubsub1id }}"
       register: bastionHost_out
