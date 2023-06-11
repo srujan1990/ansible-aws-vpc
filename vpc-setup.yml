@@ -143,8 +143,8 @@
 
     - name: Get NAT gateway ID
       set_fact:
-        nat_gateway_id: "{{ nat_gateway_facts.facts[0].nat_gateway_id }}"
-      when: nat_gateway_facts.facts | length > 0
+        nat_gateway_id: "{{ nat_gateway_out.nat_gateway_id }}"
+      when: nat_gateway_out.changed
 
     - name: Setup Private subnet route table
       ec2_vpc_route_table:
@@ -158,5 +158,7 @@
           - "{{ privsub3_out.subnet.id }}"
         routes:
           - dest: 0.0.0.0/0
-            gateway_id: "{{ nat_gateway_id | default(nat_gateway_out.gateway_id) }}"
+            gateway_id: "{{ nat_gateway_id }}"
       register: privRT_out
+
+
