@@ -155,3 +155,21 @@
         - nat_gateway_out.nat_gateway_id
         - privRT_out.route_table.id
 
+    - set_fact:
+             vpc_id: "{{ vpcout.vpc.id }}"
+             pubsub1id: "{{ pubsub1_out.subnet.id }}"
+             pubsub2id: "{{ pubsub2_out.subnet.id }}"
+             pubsub3id: "{{ pubsub3_out.subnet.id }}"
+             privsub1id: "{{ privsub1_out.subnet.id }}"
+             privsub2id: "{{ privsub2_out.subnet.id }}"
+             privsub3id: "{{ privsub3_out.subnet.id }}"
+             igwid: "{{ igw_out.gateway_id }}"
+             pubRTid: "{{ pubRT_out.route_table.id }}"
+             NATGWid: "{{ nat_gateway_out.nat_gateway_id }}"
+             privRTid: "{{ privRT_out.route_table.id }}"
+             cacheable: yes
+
+    - name: Copy set facts to file
+      copy:
+        content: "vpc_id: '{{ vpc_id }}'\npubsub1_subnet_id: '{{ pubsub1_subnet_id }}'\npubsub2_subnet_id: '{{ pubsub2_subnet_id }}'\npubsub3_subnet_id: '{{ pubsub3_subnet_id }}'\nprivsub1_subnet_id: '{{ privsub1_subnet_id }}'\nprivsub2_subnet_id: '{{ privsub2_subnet_id }}'\nprivsub3_subnet_id: '{{ privsub3_subnet_id }}'\nigw_gateway_id: '{{ igw_gateway_id }}'\npubRT_route_table_id: '{{ pubRT_route_table_id }}'\nnat_gateway_id: '{{ nat_gateway_id }}'\nprivRT_route_table_id: '{{ privRT_route_table_id }}'"
+        dest: vars/output_vars
