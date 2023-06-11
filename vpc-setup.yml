@@ -122,6 +122,30 @@
         if exist doesnot create: true
       register: NATGW_out
 
+    - name: Check if NAT gateway already exists
+      ec2_vpc_nat_gateway_facts:
+        region: "{{ region }}"
+        filters:
+          - name: "state"
+            values: ["available"]
+          - name: "vpc-id"
+            values: ["{{ vpcout.vpc.id }}"]
+      register: nat_gateway_facts
+
+    - name: Create NAT gateway if it does not exist
+      ec2_vpc_nat_gateway:
+        region: "{{ region }}"
+        subnet_id: "{{ pubsub1_out.subnet.id }}"
+        allocation_id: "{{ eip_out.allocation_id }}"
+        wait: yes
+      when: nat_gateway_facts.facts | length == 0
+      register: nat_gateway_out
+
+    - name: Get NAT gateway ID
+      set_fact:
+        nat_gateway_id: "{{ nat_gateway_facts.facts[0].nat_gateway_id }}"
+      when: nat_gateway_facts.facts | length > 0
+
     - name: Setup Private subnet route table
       ec2_vpc_route_table:
         vpc_id: "{{ vpcout.vpc.id }}"
@@ -134,5 +158,5 @@
           - "{{ privsub3_out.subnet.id }}"
         routes:
           - dest: 0.0.0.0/0
-            gateway_id: "{{ nat_gateway_out.gateway_id }}"
+            gateway_id: "{{ nat_gateway_id | default(nat_gateway_out.gateway_id) }}"
       register: privRT_out
