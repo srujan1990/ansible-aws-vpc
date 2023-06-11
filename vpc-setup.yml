@@ -130,14 +130,6 @@
       when: nat_gateway_info.nat_gateways | length == 0
       register: nat_gateway_out
 
-    - name: Associate Elastic IP with NAT Gateway
-      ec2_vpc_eip_association:
-        state: present
-        region: "{{ region }}"
-        nat_gateway_id: "{{ nat_gateway_out.gateway_id }}"
-        allocation_id: "{{ nat_gateway_out.allocation_id }}"
-      when: nat_gateway_out.changed
-
     - name: Update Route Table for Private Subnets
       ec2_vpc_route_table:
         vpc_id: "{{ vpcout.vpc.id }}"
