@@ -120,7 +120,6 @@
         wait: yes
         region: "{{ region }}"
         if exist doesnot create: true
-        vpc_id: "{{ vpcout.vpc.id }}"
       register: NATGW_out
 
     - name: Setup Private subnet route table
