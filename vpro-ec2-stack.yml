@@ -67,7 +67,7 @@
 
     - name: Creating Nginx web01
       ec2:
-        key_name: vprokey
+        key_name: vpro-key
         region: "{{region}}"
         instance_type: t2.micro
         image: "{{nginx_ami}}"
