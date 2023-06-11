@@ -3,7 +3,6 @@
   connection: local
   gather_facts: no
   tasks:
-
     - name: Import VPC setup Variable
       include_vars: vars/output_vars
 
