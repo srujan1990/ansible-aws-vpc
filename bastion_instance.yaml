@@ -22,8 +22,8 @@
         mode: 0600
       when: key_out.changed
 
-   - name: Create SG for bastion host
-     ec2_group:
+    - name: Create SG for bastion host
+      ec2_group:
        name: Bastion-host-sg
        description: Allow port 22 from everywhere and all ports within SG
        region: "{{ region }}"
@@ -33,10 +33,10 @@
            ports:
              - 22
            cidr_ip: "{{ MYIP }}"
-     register: BastionSG_out
+      register: BastionSG_out
 
-   - name: Creating Bastion Host
-     ec2:
+    - name: Creating Bastion Host
+      ec2:
        key_name: vprofile-key
        region: "{{ region }}"
        instance_type: t2.micro
@@ -54,4 +54,4 @@
          Owner: Devops Team
        group_name: Bastion-host-sg
        vpc_subnet_id: "{{ pubsub1id }}"
-     register: bastionHost_out
+      register: bastionHost_out
