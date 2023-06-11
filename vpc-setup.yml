@@ -111,4 +111,4 @@
             routes:
               - dest: 0.0.0.0/0
                 gateway_id: "{{ igw_out.gateway.id }}"
-          register: pubRT_out
+      register: pubRT_out
