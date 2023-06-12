@@ -1,24 +1,25 @@
+---
 - name: Setup Vprofile Stack
   hosts: localhost
   connection: local
   gather_facts: no
   tasks:
     - name: Import VPC setup Variable
-      include_vars: vars/output_vars
+      include_vars: vars/vpc-output_vars
 
-    - name: Import Vprofile setup variable
+    - name: Import vprofile setup Variable
       include_vars: vars/vprostacksetup
 
     - name: Create vprofile ec2 key
       ec2_key:
-        name: vpro-key
+        name: vprokey
         region: "{{region}}"
       register: vprokey_out
 
-    - name: Save private key into file vpro-key.pem
+    - name: Save private key into file loginkey_vpro.pem
       copy:
         content: "{{vprokey_out.key.private_key}}"
-        dest: "./vpro-key.pem"
+        dest: "./loginkey_vpro.pem"
         mode: 0600
       when: vprokey_out.changed
 
@@ -67,7 +68,7 @@
 
     - name: Creating Nginx web01
       ec2:
-        key_name: vpro-key
+        key_name: vprokey
         region: "{{region}}"
         instance_type: t2.micro
         image: "{{nginx_ami}}"
@@ -88,7 +89,7 @@
 
     - name: Creating tomcat app01
       ec2:
-        key_name: vpro-key
+        key_name: vprokey
         region: "{{region}}"
         instance_type: t2.micro
         image: "{{tomcat_ami}}"
@@ -109,7 +110,7 @@
 
     - name: Creating memcache mc01
       ec2:
-        key_name: vpro-key
+        key_name: vprokey
         region: "{{region}}"
         instance_type: t2.micro
         image: "{{memcache_ami}}"
@@ -130,7 +131,7 @@
 
     - name: Creating RabbitMQ rmq01
       ec2:
-        key_name: vpro-key
+        key_name: vprokey
         region: "{{region}}"
         instance_type: t2.micro
         image: "{{rmq_ami}}"
@@ -151,7 +152,7 @@
 
     - name: Creating Mysql db01
       ec2:
-        key_name: vpro-key
+        key_name: vprokey
         region: "{{region}}"
         instance_type: t2.micro
         image: "{{mysql_ami}}"
@@ -203,8 +204,8 @@
 
     - name: Copy login key to provision_stack directory
       copy:
-        src: vpro-key.pem
-        dest: provision-stack/vpro-key.pem
+        src: loginkey_vpro.pem
+        dest: provision-stack/loginkey_vpro.pem
         mode: '0400'
 
     - name: Insert/Update Inventory file provision-stack/inventory-vpro
@@ -245,5 +246,7 @@
 
           [stack_inst:vars]
           ansible_user=ubuntu
-          ansible_ssh_private_key_file=vpro-key.pem
+          ansible_ssh_private_key_file=loginkey_vpro.pem
           #ansible_python_interpreter=/usr/bin/python3
+
+
